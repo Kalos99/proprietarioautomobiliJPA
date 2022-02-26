@@ -2,6 +2,9 @@ package it.proprietarioautomobiliJPA.service.proprietario;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
+import it.proprietarioautomobiliJPA.dao.EntityManagerUtil;
 import it.proprietarioautomobiliJPA.dao.proprietario.ProprietarioDAO;
 import it.proprietarioautomobiliJPA.model.Proprietario;
 
@@ -15,20 +18,62 @@ public class ProprietarioServiceImpl implements ProprietarioService{
 
 	@Override
 	public List<Proprietario> listAllProprietari() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return proprietarioDAO.list();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
 	public Proprietario caricaSingoloProprietario(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return proprietarioDAO.get(id);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
-	public Proprietario caricaSingoloProprietarioConAbitanti(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Proprietario caricaSingoloProprietarioConAutomobili(Long id) throws Exception {
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return proprietarioDAO.getEagerAutomobili(id);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 	@Override
@@ -39,13 +84,53 @@ public class ProprietarioServiceImpl implements ProprietarioService{
 
 	@Override
 	public void inserisciNuovo(Proprietario proprietarioInstance) throws Exception {
-		// TODO Auto-generated method stub
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			proprietarioDAO.insert(proprietarioInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 		
 	}
 
 	@Override
 	public void rimuovi(Proprietario proprietarioInstance) throws Exception {
-		// TODO Auto-generated method stub
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			proprietarioDAO.delete(proprietarioInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 		
 	}
 

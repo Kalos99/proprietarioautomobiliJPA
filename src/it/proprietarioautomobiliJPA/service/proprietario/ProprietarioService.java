@@ -11,7 +11,7 @@ public interface ProprietarioService {
 
 	public Proprietario caricaSingoloProprietario(Long id) throws Exception;
 	
-	public Proprietario caricaSingoloProprietarioConAbitanti(Long id) throws Exception;
+	public Proprietario caricaSingoloProprietarioConAutomobili(Long id) throws Exception;
 
 	public void aggiorna(Proprietario proprietarioInstance) throws Exception;
 

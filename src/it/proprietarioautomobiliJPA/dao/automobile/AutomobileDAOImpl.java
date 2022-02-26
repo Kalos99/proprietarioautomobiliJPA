@@ -7,17 +7,21 @@ import javax.persistence.EntityManager;
 import it.proprietarioautomobiliJPA.model.Automobile;
 
 public class AutomobileDAOImpl implements AutomobileDAO {
+	
+	private EntityManager entityManager;
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	@Override
 	public List<Automobile> list() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.createQuery("from Automobile", Automobile.class).getResultList();
 	}
 
 	@Override
 	public Automobile get(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.find(Automobile.class, id);
 	}
 
 	@Override
@@ -27,20 +31,21 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 	}
 
 	@Override
-	public void insert(Automobile input) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void insert(Automobile automobileInstance) throws Exception {
+		if (automobileInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
+
+		entityManager.persist(automobileInstance);
 	}
 
 	@Override
-	public void delete(Automobile input) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+	public void delete(Automobile automobileInstance) throws Exception {
+		if (automobileInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
 
-	@Override
-	public void setEntityManager(EntityManager entityManager) {
-		// TODO Auto-generated method stub
+		entityManager.remove(entityManager.merge(automobileInstance));
 		
 	}
 

@@ -9,7 +9,7 @@ public interface AutomobileService {
 
 	public List<Automobile> listAllAutomobili() throws Exception;
 
-	public Automobile caricaSingoloAutomobile(Long id) throws Exception;
+	public Automobile caricaSingolaAutomobile(Long id) throws Exception;
 
 	public void aggiorna(Automobile automobileInstance) throws Exception;
 

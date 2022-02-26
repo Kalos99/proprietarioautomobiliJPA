@@ -4,13 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
         version="2.2">
-	<persistence-unit name="municipio_abitante_unit" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="proprietario_automobile_unit" transaction-type="RESOURCE_LOCAL">
 		<class>it.prova.municipioAbitanteJPA.model.Abitante</class>
 		<class>it.prova.municipioAbitanteJPA.model.Municipio</class>
 		<properties>
 			<!-- setup con MySql -->
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestionemunicipioreverse?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestioneproprietarioautomobili?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="root"/>
 			
