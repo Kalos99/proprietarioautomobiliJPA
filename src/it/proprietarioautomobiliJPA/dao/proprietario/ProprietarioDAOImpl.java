@@ -70,7 +70,7 @@ public class ProprietarioDAOImpl implements ProprietarioDAO{
 
 	@Override
 	public int countAllWithAutomobileImmatricolataAPartireDa(int annoConfronto) throws Exception {
-		TypedQuery<Integer> query = entityManager.createQuery("select count from Proprietario p join p.automobili a where a.annoimmatricolazione >= ?1", Integer.class);
+		TypedQuery<Integer> query = entityManager.createQuery("select count p.id from Proprietario p join p.automobili a where a.annoImmatricolazione >= ?1", Integer.class);
 		return query.setParameter(1, annoConfronto).getSingleResult();
 	}
 

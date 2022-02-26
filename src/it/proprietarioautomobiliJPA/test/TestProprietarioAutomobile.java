@@ -23,39 +23,41 @@ public class TestProprietarioAutomobile {
 		try {
 
 			// ora con il service posso fare tutte le invocazioni che mi servono
-			System.out.println(
-					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
 			System.out.println("");
 
 			testInserisciProprietario(proprietarioService);
-			System.out.println(
-					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
 			System.out.println("");
 
 			testInserisciAutomobile(proprietarioService, automobileService);
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 			System.out.println("");
-			
+
 			testAggiornaProprietario(proprietarioService);
-			System.out.println(
-					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
 			System.out.println("");
 
 			testAggiornaAutomobile(proprietarioService, automobileService);
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 			System.out.println("");
-			
+
 			testRimozioneProprietario(proprietarioService);
-			System.out.println(
-					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
+			System.out.println("In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size()
+					+ " elementi.");
 			System.out.println("");
 
 			testRimozioneAutomobile(proprietarioService, automobileService);
 			System.out.println(
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 			System.out.println("");
+
+			testCercaTutteLeAutomobiliConCodiceFiscaleProprietarioCheIniziaCon(proprietarioService, automobileService);
 
 			testLazyInitExc(proprietarioService, automobileService);
 
@@ -67,13 +69,14 @@ public class TestProprietarioAutomobile {
 			EntityManagerUtil.shutdown();
 		}
 	}
-	
+
 	private static void testInserisciProprietario(ProprietarioService proprietarioService) throws Exception {
 		System.out.println(".......testInserisciProprietario inizio.............");
 		System.out.println("");
 		// creo nuovo proprietario
 		Date dataPerInserimento = new SimpleDateFormat("dd-MM-yyyy").parse("21-04-1971");
-		Proprietario nuovoProprietario = new Proprietario("Antonio", "Carosello", "CRSNTN71D21B602S", dataPerInserimento);
+		Proprietario nuovoProprietario = new Proprietario("Antonio", "Carosello", "CRSNTN71D21B602S",
+				dataPerInserimento);
 		if (nuovoProprietario.getId() != null)
 			throw new RuntimeException("testInserisciProprietario fallito: record già presente ");
 
@@ -87,9 +90,9 @@ public class TestProprietarioAutomobile {
 		System.out.println(".......testInserisciProprietario fine: PASSED.............");
 		System.out.println("");
 	}
-	
-	private static void testInserisciAutomobile(ProprietarioService proprietarioService, AutomobileService automobileService)
-			throws Exception {
+
+	private static void testInserisciAutomobile(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
 		System.out.println(".......testInserisciAutomobile inizio.............");
 		System.out.println("");
 
@@ -117,13 +120,14 @@ public class TestProprietarioAutomobile {
 		System.out.println(".......testInserisciAutomobile fine: PASSED.............");
 		System.out.println("");
 	}
-	
-	private static void testAggiornaProprietario(ProprietarioService proprietarioService)throws Exception{
+
+	private static void testAggiornaProprietario(ProprietarioService proprietarioService) throws Exception {
 		System.out.println(".......testAggiornaProprietario inizio.............");
 		System.out.println("");
 		// creo nuovo proprietario
 		Date dataPerInserimento = new SimpleDateFormat("dd-MM-yyyy").parse("21-04-1971");
-		Proprietario nuovoProprietario = new Proprietario("Antonio", "Carosello", "CRSNTN71D21B602S", dataPerInserimento);
+		Proprietario nuovoProprietario = new Proprietario("Antonio", "Carosello", "CRSNTN71D21B602S",
+				dataPerInserimento);
 		if (nuovoProprietario.getId() != null)
 			throw new RuntimeException("testAggiornaProprietario fallito: record già presente ");
 
@@ -138,7 +142,7 @@ public class TestProprietarioAutomobile {
 		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
 
 		// mi metto da parte l'id su cui lavorare per il test
-		Long idProprietarioDaAggiornare = listaProprietariPresenti.get(listaProprietariPresenti.size()-1).getId();
+		Long idProprietarioDaAggiornare = listaProprietariPresenti.get(listaProprietariPresenti.size() - 1).getId();
 
 		// modifico un campo
 		String nuovoCognome = "Corsello";
@@ -152,14 +156,15 @@ public class TestProprietarioAutomobile {
 		System.out.println("");
 	}
 
-	private static void testAggiornaAutomobile(ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception{
+	private static void testAggiornaAutomobile(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
 		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
 		if (listaProprietariPresenti.isEmpty())
 			throw new RuntimeException("testInserisciAutomobile fallito: non ci sono proprietari a cui collegarci ");
 
 		Automobile nuovoAutomobile = new Automobile("Fiat", "Unto", "FR239CS", 2005);
 		// lo lego al primo proprietario che trovo
-		nuovoAutomobile.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size()-1));
+		nuovoAutomobile.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size() - 1));
 
 		// salvo il nuovo automobile
 		automobileService.inserisciNuovo(nuovoAutomobile);
@@ -172,10 +177,10 @@ public class TestProprietarioAutomobile {
 		// il test fallisce anche se non è riuscito a legare i due oggetti
 		if (nuovoAutomobile.getProprietario() == null)
 			throw new RuntimeException("testInserisciAutomobile fallito: non ha collegato il proprietario ");
-		
+
 		List<Automobile> listaAutomobiliPresenti = automobileService.listAllAutomobili();
-		Long idAutomobileDaAggiornare = listaAutomobiliPresenti.get(listaAutomobiliPresenti.size()-1).getId();
-		
+		Long idAutomobileDaAggiornare = listaAutomobiliPresenti.get(listaAutomobiliPresenti.size() - 1).getId();
+
 		String nuovoModello = "Punto";
 		Automobile toBeUpdated = automobileService.caricaSingolaAutomobile(idAutomobileDaAggiornare);
 		toBeUpdated.setModello(nuovoModello);
@@ -184,13 +189,14 @@ public class TestProprietarioAutomobile {
 			throw new RuntimeException("testAggiornaPropriet)ario FAILED ");
 
 	}
-	
+
 	private static void testRimozioneProprietario(ProprietarioService proprietarioService) throws Exception {
 		System.out.println(".......testRimozioneProprietario inizio.............");
 		System.out.println("");
-		
+
 		Date dataPerInserimento = new SimpleDateFormat("dd-MM-yyyy").parse("20-06-1999");
-		Proprietario nuovoProprietario = new Proprietario("Calogero", "Corsello", " CRSCGR99H20B602J", dataPerInserimento);
+		Proprietario nuovoProprietario = new Proprietario("Calogero", "Corsello", " CRSCGR99H20B602J",
+				dataPerInserimento);
 		if (nuovoProprietario.getId() != null)
 			throw new RuntimeException("testInserisciProprietario fallito: record già presente ");
 
@@ -205,16 +211,17 @@ public class TestProprietarioAutomobile {
 		// creo nuovo automobile ma prima mi serve un proprietario
 		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
 
-		proprietarioService.rimuovi(listaProprietariPresenti.get(listaProprietariPresenti.size()-1));
+		proprietarioService.rimuovi(listaProprietariPresenti.get(listaProprietariPresenti.size() - 1));
 		// proviamo a vedere se è stato rimosso
-		if (proprietarioService.caricaSingoloProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size()-1).getId()) != null)
+		if (proprietarioService.caricaSingoloProprietario(
+				listaProprietariPresenti.get(listaProprietariPresenti.size() - 1).getId()) != null)
 			throw new RuntimeException("testRimozioneProprietario fallito: record non cancellato ");
 		System.out.println(".......testRimozioneProprietario fine: PASSED.............");
 		System.out.println("");
 	}
-	
-	private static void testRimozioneAutomobile(ProprietarioService proprietarioService, AutomobileService automobileService)
-			throws Exception {
+
+	private static void testRimozioneAutomobile(ProprietarioService proprietarioService,
+			AutomobileService automobileService) throws Exception {
 		System.out.println(".......testRimozioneAutomobile inizio.............");
 		System.out.println("");
 
@@ -239,18 +246,76 @@ public class TestProprietarioAutomobile {
 		System.out.println(".......testRimozioneAutomobile fine: PASSED.............");
 		System.out.println("");
 	}
-	
+
+	private static void testCercaTutteLeAutomobiliConCodiceFiscaleProprietarioCheIniziaCon(
+			ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception {
+
+		System.out.println(".......testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon inizio.............");
+		System.out.println("");
+
+		// creo un paio di nuovi proprietari
+		Date dataPerInserimento = new SimpleDateFormat("dd-MM-yyyy").parse("02-12-1999");
+		Proprietario nuovoProprietario = new Proprietario("Flavio", "Amato", "MTAFVG99T02A089I", dataPerInserimento);
+		if (nuovoProprietario.getId() != null)
+			throw new RuntimeException(
+					"testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fallito: record già presente ");
+
+		// salvo
+		proprietarioService.inserisciNuovo(nuovoProprietario);
+		// da questa riga in poi il record, se correttamente inserito, ha un nuovo id
+
+		if (nuovoProprietario.getId() == null)
+			throw new RuntimeException("testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fallito ");
+
+		Date dataPerInserimento2 = new SimpleDateFormat("dd-MM-yyyy").parse("20-01-1998");
+		Proprietario nuovoProprietario2 = new Proprietario("Salvatore", "Amato", "MTASVT98A20A089S",
+				dataPerInserimento2);
+		if (nuovoProprietario2.getId() != null)
+			throw new RuntimeException(
+					"testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fallito: record già presente ");
+
+		// salvo
+		proprietarioService.inserisciNuovo(nuovoProprietario2);
+		// da questa riga in poi il record, se correttamente inserito, ha un nuovo id
+
+		if (nuovoProprietario.getId() == null)
+			throw new RuntimeException("testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fallito ");
+
+		// prima mi serve un proprietario
+		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
+		if (listaProprietariPresenti.isEmpty())
+			throw new RuntimeException(
+					"testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fallito: non ci sono proprietari a cui collegarci ");
+
+		Automobile nuovoAutomobile = new Automobile("Lancia", "Y", "CD167VD", 2007);
+		nuovoAutomobile.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size() - 1));
+		automobileService.inserisciNuovo(nuovoAutomobile);
+
+		Automobile nuovoAutomobile2 = new Automobile("Lancia", "X", "WQ843WL", 2014);
+		nuovoAutomobile2.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size() - 2));
+		;
+
+		if (automobileService.cercaTutteLeAutomobiliConCodiceFiscaleProprietarioCheIniziaCon("MTA").size() < 2)
+			throw new RuntimeException(
+					"testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fallito: numero record inatteso ");
+
+		System.out.println(
+				".......testCercaTuttiGliAbitantiConProprietarioIlCuiCodiceIniziaCon fine: PASSED.............");
+		System.out.println("");
+
+	}
+
 	private static void testLazyInitExc(ProprietarioService proprietarioService, AutomobileService automobileService)
 			throws Exception {
 		System.out.println(".......testLazyInitExc inizio.............");
 		System.out.println("");
 
 		// prima mi serve un proprietario
-		List<Proprietario> listaMunicipiPresenti = proprietarioService.listAllProprietari();
-		if (listaMunicipiPresenti.isEmpty())
+		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
+		if (listaProprietariPresenti.isEmpty())
 			throw new RuntimeException("testLazyInitExc fallito: non ci sono proprietari a cui collegarci ");
 
-		Proprietario proprietarioSuCuiFareIlTest = listaMunicipiPresenti.get(0);
+		Proprietario proprietarioSuCuiFareIlTest = listaProprietariPresenti.get(0);
 		// se interrogo la relazione devo ottenere un'eccezione visto che sono LAZY
 		try {
 			proprietarioSuCuiFareIlTest.getAutomobili().size();
@@ -263,6 +328,58 @@ public class TestProprietarioAutomobile {
 		// se usiamo un caricamento EAGER risolviamo...dipende da cosa ci serve!!!
 		// proprietarioService.caricaSingoloProprietarioConAbitanti(...);
 		System.out.println(".......testLazyInitExc fine: PASSED.............");
+		System.out.println("");
+	}
+
+	private static void testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(
+			ProprietarioInstance proprietarioInstance, AutomobileInstance automobileInstance) throws Exception {
+
+		System.out.println(".......testCountByDataFormazioneCompagniaGreaterThan inizio.............");
+		System.out.println("");
+
+		Date dataFondazione = new SimpleDateFormat("dd-MM-yyyy").parse("30-05-2005");
+		Compagnia nuovaCompagnia = new Compagnia("Cyberline", (long) 8500000, dataFondazione);
+		int quantiElementiInseriti = compagniaDAOInstance.insert(nuovaCompagnia);
+		if (quantiElementiInseriti < 1)
+			throw new RuntimeException(
+					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, compagnia non inserita");
+
+		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
+		Compagnia compagniaRicaricata = elencoCompagniePresenti.get(elencoCompagniePresenti.size() - 1);
+		if (compagniaRicaricata == null)
+			throw new RuntimeException(
+					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, compagnia non ricaricata");
+
+		Date dataNascita = new SimpleDateFormat("dd-MM-yyyy").parse("14-08-1992");
+		Date dataAssunzione = new SimpleDateFormat("dd-MM-yyyy").parse("13-05-2018");
+
+		// me ne creo uno che fa al caso mio così da poterne trovare almeno uno
+		Impiegato nuovoImpiegato = new Impiegato("Flavio", "Amato", " MTAFLV92M14A089T", dataNascita, dataAssunzione,
+				compagniaRicaricata);
+
+		int quantiElementiInseriti1 = impiegatoDAOInstance.insert(nuovoImpiegato);
+		if (quantiElementiInseriti1 < 1)
+			throw new RuntimeException(
+					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, impiegato non inserito");
+
+		Date dataNascita2 = new SimpleDateFormat("dd-MM-yyyy").parse("28-02-1994");
+		Date dataAssunzione2 = new SimpleDateFormat("dd-MM-yyyy").parse("18-06-2019");
+
+		// me ne creo uno che fa al caso mio così da poterne trovare almeno uno
+		Impiegato altroNuovoImpiegato = new Impiegato("Vincenzo", "Collura", "CLLVCN94B28D514B", dataNascita2,
+				dataAssunzione2, compagniaRicaricata);
+
+		int quantiElementiInseriti2 = impiegatoDAOInstance.insert(altroNuovoImpiegato);
+		if (quantiElementiInseriti2 < 1)
+			throw new RuntimeException(
+					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, impiegato non inserito");
+
+		Date dataPerQuery = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2002");
+		if (impiegatoDAOInstance.countByDataFormazioneCompagniaGreaterThan(dataPerQuery) < 0) {
+			throw new RuntimeException("testCountByDataFormazioneCompagniaGreaterThan : FAILED, ricerca non riuscita");
+		}
+		;
+		System.out.println(".......testCountByDataFormazioneCompagniaGreaterThan fine: PASSED.............");
 		System.out.println("");
 	}
 

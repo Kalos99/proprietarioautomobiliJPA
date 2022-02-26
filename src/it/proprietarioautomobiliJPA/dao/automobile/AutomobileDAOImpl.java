@@ -56,7 +56,7 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 
 	@Override
 	public List<Automobile> findAllByCodFisProprietarioIniziaCon(String iniziale) throws Exception {
-		TypedQuery<Automobile> query = entityManager.createQuery("from Automobile a where a.proprietario.codicefiscale like ?1", Automobile.class);
+		TypedQuery<Automobile> query = entityManager.createQuery("from Automobile a where a.proprietario.codiceFiscale like ?1", Automobile.class);
 		return query.setParameter(1, iniziale + "%").getResultList();
 	}
 
