@@ -37,6 +37,16 @@ public class TestProprietarioAutomobile {
 					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
 			System.out.println("");
 			
+			testAggiornaProprietario(proprietarioService);
+			System.out.println(
+					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
+			System.out.println("");
+
+			testAggiornaAutomobile(proprietarioService, automobileService);
+			System.out.println(
+					"In tabella Automobile ci sono " + automobileService.listAllAutomobili().size() + " elementi.");
+			System.out.println("");
+			
 			testRimozioneProprietario(proprietarioService);
 			System.out.println(
 					"In tabella Proprietario ci sono " + proprietarioService.listAllProprietari().size() + " elementi.");
@@ -106,6 +116,73 @@ public class TestProprietarioAutomobile {
 
 		System.out.println(".......testInserisciAutomobile fine: PASSED.............");
 		System.out.println("");
+	}
+	
+	private static void testAggiornaProprietario(ProprietarioService proprietarioService)throws Exception{
+		System.out.println(".......testAggiornaProprietario inizio.............");
+		System.out.println("");
+		// creo nuovo proprietario
+		Date dataPerInserimento = new SimpleDateFormat("dd-MM-yyyy").parse("21-04-1971");
+		Proprietario nuovoProprietario = new Proprietario("Antonio", "Carosello", "CRSNTN71D21B602S", dataPerInserimento);
+		if (nuovoProprietario.getId() != null)
+			throw new RuntimeException("testAggiornaProprietario fallito: record già presente ");
+
+		// salvo
+		proprietarioService.inserisciNuovo(nuovoProprietario);
+		// da questa riga in poi il record, se correttamente inserito, ha un nuovo id
+
+		if (nuovoProprietario.getId() == null)
+			throw new RuntimeException("testAggiornaProprietario fallito ");
+
+		// recupero col findbyexample e mi aspetto di trovarla
+		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
+
+		// mi metto da parte l'id su cui lavorare per il test
+		Long idProprietarioDaAggiornare = listaProprietariPresenti.get(listaProprietariPresenti.size()-1).getId();
+
+		// modifico un campo
+		String nuovoCognome = "Corsello";
+		Proprietario toBeUpdated = proprietarioService.caricaSingoloProprietario(idProprietarioDaAggiornare);
+		toBeUpdated.setCognome(nuovoCognome);
+		proprietarioService.aggiorna(toBeUpdated);
+		if (!toBeUpdated.getCognome().equals(nuovoCognome))
+			throw new RuntimeException("testAggiornaPropriet)ario FAILED ");
+
+		System.out.println(".......testAggiornaProprietario PASSED.............");
+		System.out.println("");
+	}
+
+	private static void testAggiornaAutomobile(ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception{
+		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
+		if (listaProprietariPresenti.isEmpty())
+			throw new RuntimeException("testInserisciAutomobile fallito: non ci sono proprietari a cui collegarci ");
+
+		Automobile nuovoAutomobile = new Automobile("Fiat", "Unto", "FR239CS", 2005);
+		// lo lego al primo proprietario che trovo
+		nuovoAutomobile.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size()-1));
+
+		// salvo il nuovo automobile
+		automobileService.inserisciNuovo(nuovoAutomobile);
+
+		// da questa riga in poi il record, se correttamente inserito, ha un nuovo id
+
+		if (nuovoAutomobile.getId() == null)
+			throw new RuntimeException("testInserisciAutomobile fallito ");
+
+		// il test fallisce anche se non è riuscito a legare i due oggetti
+		if (nuovoAutomobile.getProprietario() == null)
+			throw new RuntimeException("testInserisciAutomobile fallito: non ha collegato il proprietario ");
+		
+		List<Automobile> listaAutomobiliPresenti = automobileService.listAllAutomobili();
+		Long idAutomobileDaAggiornare = listaAutomobiliPresenti.get(listaAutomobiliPresenti.size()-1).getId();
+		
+		String nuovoModello = "Punto";
+		Automobile toBeUpdated = automobileService.caricaSingolaAutomobile(idAutomobileDaAggiornare);
+		toBeUpdated.setModello(nuovoModello);
+		automobileService.aggiorna(toBeUpdated);
+		if (!toBeUpdated.getModello().equals(nuovoModello))
+			throw new RuntimeException("testAggiornaPropriet)ario FAILED ");
+
 	}
 	
 	private static void testRimozioneProprietario(ProprietarioService proprietarioService) throws Exception {

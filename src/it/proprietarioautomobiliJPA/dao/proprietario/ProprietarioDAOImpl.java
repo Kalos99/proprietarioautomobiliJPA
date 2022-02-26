@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import it.proprietarioautomobiliJPA.model.Automobile;
 import it.proprietarioautomobiliJPA.model.Proprietario;
 
 public class ProprietarioDAOImpl implements ProprietarioDAO{
@@ -41,8 +42,11 @@ public class ProprietarioDAOImpl implements ProprietarioDAO{
 	}
 
 	@Override
-	public void update(Proprietario o) throws Exception {
-		// TODO Auto-generated method stub
+	public void update(Proprietario proprietarioInstance) throws Exception {
+		if (proprietarioInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
+		proprietarioInstance = entityManager.merge(proprietarioInstance);
 		
 	}
 
@@ -66,8 +70,8 @@ public class ProprietarioDAOImpl implements ProprietarioDAO{
 
 	@Override
 	public int countAllWithAutomobileImmatricolataAPartireDa(int annoConfronto) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		TypedQuery<Integer> query = entityManager.createQuery("select count from Proprietario p join p.automobili a where a.annoimmatricolazione >= ?1", Integer.class);
+		return query.setParameter(1, annoConfronto).getSingleResult();
 	}
 
 }

@@ -3,6 +3,7 @@ package it.proprietarioautomobiliJPA.dao.automobile;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.proprietarioautomobiliJPA.model.Automobile;
 
@@ -25,8 +26,12 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 	}
 
 	@Override
-	public void update(Automobile input) throws Exception {
-		// TODO Auto-generated method stub
+	public void update(Automobile automobileInstance) throws Exception {
+		if (automobileInstance == null) {
+			throw new Exception("Problema valore in input");
+		}
+
+		automobileInstance = entityManager.merge(automobileInstance);
 		
 	}
 
@@ -51,8 +56,8 @@ public class AutomobileDAOImpl implements AutomobileDAO {
 
 	@Override
 	public List<Automobile> findAllByCodFisProprietarioIniziaCon(String iniziale) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<Automobile> query = entityManager.createQuery("from Automobile a where a.proprietario.codicefiscale like ?1", Automobile.class);
+		return query.setParameter(1, iniziale + "%").getResultList();
 	}
 
 }

@@ -8,10 +8,10 @@ import it.proprietarioautomobiliJPA.dao.EntityManagerUtil;
 import it.proprietarioautomobiliJPA.dao.proprietario.ProprietarioDAO;
 import it.proprietarioautomobiliJPA.model.Proprietario;
 
-public class ProprietarioServiceImpl implements ProprietarioService{
-	
+public class ProprietarioServiceImpl implements ProprietarioService {
+
 	private ProprietarioDAO proprietarioDAO;
-	
+
 	public void setProprietarioDAO(ProprietarioDAO proprietarioDAO) {
 		this.proprietarioDAO = proprietarioDAO;
 	}
@@ -78,8 +78,28 @@ public class ProprietarioServiceImpl implements ProprietarioService{
 
 	@Override
 	public void aggiorna(Proprietario proprietarioInstance) throws Exception {
-		// TODO Auto-generated method stub
-		
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// questo è come il MyConnection.getConnection()
+			entityManager.getTransaction().begin();
+
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			proprietarioDAO.update(proprietarioInstance);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+
 	}
 
 	@Override
@@ -105,7 +125,7 @@ public class ProprietarioServiceImpl implements ProprietarioService{
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
@@ -131,14 +151,26 @@ public class ProprietarioServiceImpl implements ProprietarioService{
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
-	public List<Proprietario> cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(int annoConfronto)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public int cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(int annoConfronto) throws Exception{
+		// questo è come una connection
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+
+		try {
+			// uso l'injection per il dao
+			proprietarioDAO.setEntityManager(entityManager);
+
+			// eseguo quello che realmente devo fare
+			return proprietarioDAO.countAllWithAutomobileImmatricolataAPartireDa(annoConfronto);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 }
