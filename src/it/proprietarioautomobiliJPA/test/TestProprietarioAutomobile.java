@@ -60,6 +60,8 @@ public class TestProprietarioAutomobile {
 			testCercaTutteLeAutomobiliConCodiceFiscaleProprietarioCheIniziaCon(proprietarioService, automobileService);
 
 			testLazyInitExc(proprietarioService, automobileService);
+			
+			testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(proprietarioService, automobileService); 
 
 		} catch (Throwable e) {
 			e.printStackTrace();

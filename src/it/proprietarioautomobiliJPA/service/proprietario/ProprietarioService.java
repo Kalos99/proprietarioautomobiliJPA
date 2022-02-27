@@ -19,7 +19,7 @@ public interface ProprietarioService {
 
 	public void rimuovi(Proprietario proprietarioInstance) throws Exception;
 
-	public int cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(int annoConfronto) throws Exception;
+	public Long cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(int annoConfronto) throws Exception;
 
 	//per injection
 	public void setProprietarioDAO(ProprietarioDAO proprietarioDAO);

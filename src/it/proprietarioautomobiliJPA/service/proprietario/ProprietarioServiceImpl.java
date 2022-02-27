@@ -155,7 +155,7 @@ public class ProprietarioServiceImpl implements ProprietarioService {
 	}
 
 	@Override
-	public int cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(int annoConfronto) throws Exception{
+	public Long cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(int annoConfronto) throws Exception{
 		// questo è come una connection
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 

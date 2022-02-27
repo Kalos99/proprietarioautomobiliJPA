@@ -7,5 +7,5 @@ public interface ProprietarioDAO extends IBaseDAO<Proprietario>{
 	
 	public Proprietario getEagerAutomobili(Long id) throws Exception;
 
-	public int countAllWithAutomobileImmatricolataAPartireDa(int annoConfronto) throws Exception;
+	public Long countAllWithAutomobileImmatricolataAPartireDa(int annoConfronto) throws Exception;
 }
