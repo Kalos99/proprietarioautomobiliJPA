@@ -293,7 +293,7 @@ public class TestProprietarioAutomobile {
 
 		Automobile nuovoAutomobile2 = new Automobile("Lancia", "X", "WQ843WL", 2014);
 		nuovoAutomobile2.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size() - 2));
-		;
+		automobileService.inserisciNuovo(nuovoAutomobile2);
 
 		if (automobileService.cercaTutteLeAutomobiliConCodiceFiscaleProprietarioCheIniziaCon("MTA").size() < 2)
 			throw new RuntimeException(
@@ -331,55 +331,59 @@ public class TestProprietarioAutomobile {
 		System.out.println("");
 	}
 
-	private static void testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(
-			ProprietarioInstance proprietarioInstance, AutomobileInstance automobileInstance) throws Exception {
+	private static void testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(ProprietarioService proprietarioService, AutomobileService automobileService) throws Exception {
 
-		System.out.println(".......testCountByDataFormazioneCompagniaGreaterThan inizio.............");
+		System.out.println(".......testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa inizio.............");
 		System.out.println("");
 
-		Date dataFondazione = new SimpleDateFormat("dd-MM-yyyy").parse("30-05-2005");
-		Compagnia nuovaCompagnia = new Compagnia("Cyberline", (long) 8500000, dataFondazione);
-		int quantiElementiInseriti = compagniaDAOInstance.insert(nuovaCompagnia);
-		if (quantiElementiInseriti < 1)
+		// creo un paio di nuovi proprietari
+		Date dataPerInserimento = new SimpleDateFormat("dd-MM-yyyy").parse("21-11-1998");
+		Proprietario nuovoProprietario = new Proprietario("Luca", "Tamburo", "TMBLCU98S21E459O", dataPerInserimento);
+		if (nuovoProprietario.getId() != null)
 			throw new RuntimeException(
-					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, compagnia non inserita");
+					"testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa fallito: record già presente ");
 
-		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
-		Compagnia compagniaRicaricata = elencoCompagniePresenti.get(elencoCompagniePresenti.size() - 1);
-		if (compagniaRicaricata == null)
+		// salvo
+		proprietarioService.inserisciNuovo(nuovoProprietario);
+		// da questa riga in poi il record, se correttamente inserito, ha un nuovo id
+
+		if (nuovoProprietario.getId() == null)
+			throw new RuntimeException("testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa fallito ");
+
+		Date dataPerInserimento2 = new SimpleDateFormat("dd-MM-yyyy").parse("19-05-1996");
+		Proprietario nuovoProprietario2 = new Proprietario("Emanuele", "Seminara", "SMNMNL96E19G273O",
+				dataPerInserimento2);
+		if (nuovoProprietario2.getId() != null)
 			throw new RuntimeException(
-					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, compagnia non ricaricata");
+					"testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa fallito: record già presente ");
 
-		Date dataNascita = new SimpleDateFormat("dd-MM-yyyy").parse("14-08-1992");
-		Date dataAssunzione = new SimpleDateFormat("dd-MM-yyyy").parse("13-05-2018");
+		// salvo
+		proprietarioService.inserisciNuovo(nuovoProprietario2);
+		// da questa riga in poi il record, se correttamente inserito, ha un nuovo id
 
-		// me ne creo uno che fa al caso mio così da poterne trovare almeno uno
-		Impiegato nuovoImpiegato = new Impiegato("Flavio", "Amato", " MTAFLV92M14A089T", dataNascita, dataAssunzione,
-				compagniaRicaricata);
+		if (nuovoProprietario.getId() == null)
+			throw new RuntimeException("testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa fallito ");
 
-		int quantiElementiInseriti1 = impiegatoDAOInstance.insert(nuovoImpiegato);
-		if (quantiElementiInseriti1 < 1)
+		// prima mi serve un proprietario
+		List<Proprietario> listaProprietariPresenti = proprietarioService.listAllProprietari();
+		if (listaProprietariPresenti.isEmpty())
 			throw new RuntimeException(
-					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, impiegato non inserito");
+					"testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa fallito: non ci sono proprietari a cui collegarci ");
 
-		Date dataNascita2 = new SimpleDateFormat("dd-MM-yyyy").parse("28-02-1994");
-		Date dataAssunzione2 = new SimpleDateFormat("dd-MM-yyyy").parse("18-06-2019");
+		Automobile nuovoAutomobile = new Automobile("Ferrari", "TestaRossa", "AC219DW", 2017);
+		nuovoAutomobile.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size() - 1));
+		automobileService.inserisciNuovo(nuovoAutomobile);
 
-		// me ne creo uno che fa al caso mio così da poterne trovare almeno uno
-		Impiegato altroNuovoImpiegato = new Impiegato("Vincenzo", "Collura", "CLLVCN94B28D514B", dataNascita2,
-				dataAssunzione2, compagniaRicaricata);
-
-		int quantiElementiInseriti2 = impiegatoDAOInstance.insert(altroNuovoImpiegato);
-		if (quantiElementiInseriti2 < 1)
-			throw new RuntimeException(
-					"testCountByDataFormazioneCompagniaGreaterThan : FAILED, impiegato non inserito");
-
-		Date dataPerQuery = new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2002");
-		if (impiegatoDAOInstance.countByDataFormazioneCompagniaGreaterThan(dataPerQuery) < 0) {
-			throw new RuntimeException("testCountByDataFormazioneCompagniaGreaterThan : FAILED, ricerca non riuscita");
+		Automobile nuovoAutomobile2 = new Automobile("Mercedes", "Benz", "DS395FN", 2015);
+		nuovoAutomobile2.setProprietario(listaProprietariPresenti.get(listaProprietariPresenti.size() - 2));
+		automobileService.inserisciNuovo(nuovoAutomobile2);
+		
+		int annoPerConfronto = 2011;
+		if (proprietarioService.cercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa(annoPerConfronto) < 2) {
+			throw new RuntimeException("testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa : FAILED, ricerca non riuscita");
 		}
 		;
-		System.out.println(".......testCountByDataFormazioneCompagniaGreaterThan fine: PASSED.............");
+		System.out.println(".......testCercaTuttiIProprietariConAutomobiliImmatricolateAPartireDa fine: PASSED.............");
 		System.out.println("");
 	}
 
